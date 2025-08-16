@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { getAllRating, getAllStore, makeRating } from "../src/api/userApi";
 
 const handleError = (err) => {
-  console.log(err);
+  // console.log(err);
   if (err.response?.data?.details) {
     err.response.data.details.forEach((d) => {
       toast.error(`${d.field}: ${d.message}`);

@@ -54,34 +54,49 @@ const Home = () => {
     const totalPages = allStore?.pagination?.pages || 1;
 
     return (
-        <main className="p-4 max-w-4xl mx-auto">
-            <header className="flex justify-between items-center mb-6">
-                <div className="flex gap-4">
-                    <HomeIcon className="mt-2" />
-                    <h1 className="text-2xl font-bold">Dukan</h1>
+        <main className="p-4 max-w-4xl mx-auto space-y-6">
+            <header className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                    <HomeIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+                    <h1 className="text-lg md:text-xl font-bold">Dukan</h1>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                     {isAuth ? (
-                        <button onClick={logout} className="px-3 py-1 bg-black text-white rounded">
+                        <button
+                            onClick={logout}
+                            className="px-3 py-1.5 bg-black text-white rounded-md text-sm md:text-base hover:bg-gray-800 transition"
+                        >
                             Logout
                         </button>
                     ) : (
-                        <Link to="/login" className="px-3 py-1 bg-black text-white rounded">
+                        <Link
+                            to="/login"
+                            className="px-3 py-1.5 bg-black text-white rounded-md text-sm md:text-base hover:bg-gray-800 transition"
+                        >
                             Login
                         </Link>
                     )}
                     {user?.role === "ADMIN" && (
-                        <Link to="/admin" className="px-3 py-1 bg-black text-white rounded">
+                        <Link
+                            to="/admin"
+                            className="px-3 py-1.5 bg-black text-white rounded-md text-sm md:text-base hover:bg-gray-800 transition"
+                        >
                             Admin
                         </Link>
                     )}
                     {user?.role === "USER" && (
-                        <Link to="/my-ratings" className="px-3 py-1 bg-blue-500 text-white rounded">
+                        <Link
+                            to="/my-ratings"
+                            className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm md:text-base hover:bg-blue-600 transition"
+                        >
                             My Ratings
                         </Link>
                     )}
                     {user?.role === "STORE_OWNER" && (
-                        <Link to="/my-store" className="px-3 py-1 bg-black text-white rounded">
+                        <Link
+                            to="/my-store"
+                            className="px-3 py-1.5 bg-black text-white rounded-md text-sm md:text-base hover:bg-gray-800 transition"
+                        >
                             See All User
                         </Link>
                     )}
@@ -90,43 +105,47 @@ const Home = () => {
 
             {user?.role === "USER" && (
                 <section>
-                    <div className="flex gap-2 mb-4">
+                    <div className="flex flex-col sm:flex-row gap-2 mb-4">
                         <input
                             type="text"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
                             placeholder={`Search by ${filterBy}`}
-                            className="border px-3 py-2 rounded w-full"
+                            className="border px-3 py-2 rounded w-full text-sm md:text-base"
                         />
                         <select
                             value={filterBy}
                             onChange={(e) => setFilterBy(e.target.value)}
-                            className="border px-3 py-2 rounded"
+                            className="border px-3 py-2 rounded text-sm md:text-base"
                         >
                             <option value="name">Name</option>
                             <option value="address">Address</option>
                         </select>
                     </div>
 
-                    {storesLoading && <p className="text-center text-gray-500">Loading stores...</p>}
+                    {storesLoading && (
+                        <p className="text-center text-gray-500 text-sm">Loading stores...</p>
+                    )}
                     {storesError && (
-                        <p className="text-center text-red-500">
+                        <p className="text-center text-red-500 text-sm">
                             {storesErrorMsg?.message || "Error fetching stores"}
                         </p>
                     )}
 
                     {!storesLoading && !storesError && stores.length === 0 && (
-                        <p className="text-center text-gray-500">No stores found.</p>
+                        <p className="text-center text-gray-500 text-sm">No stores found.</p>
                     )}
 
                     {!storesLoading && !storesError && stores.length > 0 && (
                         <>
                             <ul className="grid gap-3">
                                 {stores.map((store) => (
-                                    <li key={store.id} className="border p-3 rounded">
-                                        <h2 className="font-semibold">{store.name}</h2>
-                                        <p className="text-gray-600">{store.address}</p>
-                                        <p className="text-yellow-600">
+                                    <li key={store.id} className="border p-3 rounded-lg shadow-sm">
+                                        <h2 className="font-semibold text-base md:text-lg">
+                                            {store.name}
+                                        </h2>
+                                        <p className="text-gray-600 text-sm">{store.address}</p>
+                                        <p className="text-yellow-600 text-sm">
                                             ⭐ Average: {store.averageRating ?? "No rating"}
                                         </p>
                                         <div className="flex gap-1 mt-1">
@@ -134,7 +153,9 @@ const Home = () => {
                                                 <button
                                                     key={star}
                                                     onClick={() => handleRating(store.id, star)}
-                                                    className={`text-xl transition hover:scale-110 ${star <= (store.userRating || 0) ? "text-yellow-500" : "text-gray-400"
+                                                    className={`text-lg md:text-xl transition hover:scale-110 ${star <= (store.userRating || 0)
+                                                            ? "text-yellow-500"
+                                                            : "text-gray-400"
                                                         }`}
                                                 >
                                                     ★
@@ -150,7 +171,7 @@ const Home = () => {
                                     <button
                                         disabled={page === 1}
                                         onClick={() => setPage((old) => Math.max(old - 1, 1))}
-                                        className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                                        className="px-3 py-1 bg-gray-200 rounded-md text-sm disabled:opacity-50"
                                     >
                                         Prev
                                     </button>
@@ -158,7 +179,10 @@ const Home = () => {
                                         <button
                                             key={i}
                                             onClick={() => setPage(i + 1)}
-                                            className={`px-3 py-1 rounded ${page === i + 1 ? "bg-black text-white" : "bg-gray-200"}`}
+                                            className={`px-3 py-1 rounded-md text-sm ${page === i + 1
+                                                    ? "bg-black text-white"
+                                                    : "bg-gray-200 hover:bg-gray-300"
+                                                }`}
                                         >
                                             {i + 1}
                                         </button>
@@ -166,7 +190,7 @@ const Home = () => {
                                     <button
                                         disabled={page === totalPages}
                                         onClick={() => setPage((old) => Math.min(old + 1, totalPages))}
-                                        className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+                                        className="px-3 py-1 bg-gray-200 rounded-md text-sm disabled:opacity-50"
                                     >
                                         Next
                                     </button>
@@ -178,31 +202,40 @@ const Home = () => {
             )}
 
             {user?.role === "STORE_OWNER" && (
-                <section className="border p-4 rounded">
-                    My Store
-                    {infoLoading && <p className="text-center text-gray-500">Loading store info...</p>}
+                <section className="border p-4 rounded-lg shadow-sm">
+                    <h2 className="font-semibold text-lg mb-2">My Store</h2>
+                    {infoLoading && (
+                        <p className="text-center text-gray-500 text-sm">
+                            Loading store info...
+                        </p>
+                    )}
                     {infoError && (
-                        <p className="text-center text-red-500">
+                        <p className="text-center text-red-500 text-sm">
                             Contact Admin to create Store.
                             {infoErrorMsg?.message || "Error fetching store info"}
                         </p>
                     )}
                     {!infoLoading && !infoError && storeInfo?.store && (
                         <>
-                            <h1 className="text-2xl font-bold mb-2">{storeInfo.store.name}</h1>
-                            <p className="text-gray-600 mb-1">{storeInfo.store.address}</p>
-                            <p className="text-gray-600 mb-1">Email: {storeInfo.store.email}</p>
-                            <p className="text-yellow-600 mb-1">
+                            <h1 className="text-xl font-bold mb-2">{storeInfo.store.name}</h1>
+                            <p className="text-gray-600 text-sm">{storeInfo.store.address}</p>
+                            <p className="text-gray-600 text-sm">Email: {storeInfo.store.email}</p>
+                            <p className="text-yellow-600 text-sm">
                                 ⭐ Average Rating: {storeInfo.store.averageRating ?? "No rating"}
                             </p>
-                            <p className="text-gray-500">Total Ratings: {storeInfo.store.totalRatings}</p>
+                            <p className="text-gray-500 text-sm">
+                                Total Ratings: {storeInfo.store.totalRatings}
+                            </p>
                         </>
                     )}
                 </section>
             )}
 
-            <p className="mt-6 text-center text-gray-700">Welcome to Dukan</p>
+            <p className="mt-6 text-center text-gray-700 text-sm md:text-base">
+                Welcome to Dukan
+            </p>
         </main>
+
     );
 };
 
