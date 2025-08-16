@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Login from './components/auth/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Register from './components/auth/Register';
-import AdminDashboard from './pages/AdminDashBoard';
+import AdminDashboard from './pages/AdminDashboard';
 import UserManagement from './pages/UserManagement';
 import Store from './pages/Store';
 import StoreManagement from './pages/StoreManagement';
